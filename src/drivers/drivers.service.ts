@@ -1,7 +1,15 @@
 import { Injectable } from '@nestjs/common';
-
+import { DriverModel } from './models/drivers.model';
+import { CreateDriverDto } from './dto/create-driver.dto';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
 @Injectable()
 export class DriversService {
+  constructor(
+    @InjectRepository(DriverModel)
+    private driverRepository: Repository<DriverModel>,
+  ) {}
+
   mockDrivers = [
     { name: 'Jose Moacir', isAvailable: false },
     { name: 'Reinaldo', isAvailable: true },
@@ -9,29 +17,23 @@ export class DriversService {
     { name: 'fretado', isAvailable: true },
   ];
 
-  create() {
-    return 'This action adds a new driver';
+  create(dataDriver: CreateDriverDto): Promise<DriverModel> {
+    return this.driverRepository.save(dataDriver)
   }
 
-  findAll() {
-    console.log('to aqui');
-    return this.mockDrivers;
+  async findAll(): Promise<DriverModel[]> {
+    return this.driverRepository.find()
   }
 
-  findOne(nameDriver: string) {
-    const dataDriver = this.mockDrivers.filter(
-      (driver) => driver.name.toLowerCase() === nameDriver.toLowerCase(),
-    );
-    if (dataDriver.length == 0) return 'dont find driver';
-
-    return `This action returns excelent #${dataDriver}`;
+  async findOne(nameDriver: string): Promise<DriverModel> {
+    return this.driverRepository.findOne({ where: { name: nameDriver }})
   }
 
   update() {
     return `This action updates a driver`;
   }
 
-  remove() {
-    return `This action removes a driver`;
+  async remove(id: string): Promise<boolean> {
+    return true;
   }
 }
