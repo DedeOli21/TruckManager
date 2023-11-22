@@ -6,6 +6,7 @@ export class CreateDriverDto {
     id: string
 
     @IsString()
+    @Field()
     name: string;
 
     @Field({ nullable: true })
@@ -15,9 +16,11 @@ export class CreateDriverDto {
 
     @IsOptional()
     @IsString()
+    @Field({ nullable: true })
     lastTrip?: string;
 
     @IsBoolean()
+    @Field()
     avaliable: boolean;
 
 }

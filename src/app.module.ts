@@ -6,6 +6,7 @@ import { AppService } from './app.service';
 import { DriversModule } from './drivers/drivers.module';
 import { TripsModule } from './trips/trips.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { typeOrmConfig } from './configs/typeorm.config';
 
 @Module({
   imports: [
@@ -15,16 +16,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
       driver: ApolloDriver,
       autoSchemaFile: 'schema.gql',
     }),
-    TypeOrmModule.forRoot({
-      type: 'postgres',
-      host: 'localhost',
-      port: 5432,
-      username: 'godwinekuma',
-      password: '',
-      database: 'invoiceapp',
-      entities: ['dist/**/*.model.js'],
-      synchronize: false,
-    }),
+    TypeOrmModule.forRoot(typeOrmConfig),
   ],
   controllers: [AppController],
   providers: [AppService],
