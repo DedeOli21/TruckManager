@@ -1,11 +1,11 @@
 import { Injectable } from '@nestjs/common';
-import { CreateTripDto } from './dto/create-trip.dto';
-// import { UpdateTripDto } from './dto/update-trip.dto';
+import { CreateTripInput } from './dto/create-trip.input';
+import { UpdateTripInput } from './dto/update-trip.input';
 
 @Injectable()
 export class TripsService {
-  create(createTripDto: CreateTripDto) {
-    return `This action adds a new trip ${JSON.stringify(createTripDto)}`;
+  create(createTripInput: CreateTripInput) {
+    return 'This action adds a new trip';
   }
 
   findAll() {
@@ -16,11 +16,11 @@ export class TripsService {
     return `This action returns a #${id} trip`;
   }
 
-  // update(id: number, updateTripDto: UpdateTripDto) {
-  //   return `This action updates a #${id} trip`;
-  // }
+  update(id: number, updateTripInput: UpdateTripInput) {
+    return `This action updates a #${id} trip`;
+  }
 
-  // remove(id: number) {
-  //   return `This action removes a #${id} trip`;
-  // }
+  remove(id: number) {
+    return `This action removes a #${id} trip`;
+  }
 }

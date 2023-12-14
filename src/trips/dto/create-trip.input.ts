@@ -1,10 +1,7 @@
-import { ObjectType, Field, Int } from '@nestjs/graphql';
+import { InputType, Int, Field } from '@nestjs/graphql';
 
-@ObjectType()
-export class Trip {
-  @Field(() => Int, { description: 'id' })
-  id: number;
-
+@InputType()
+export class CreateTripInput {
   @Field(() => Int, { description: 'id do motorista' })
   driver_id: number;
 
@@ -31,4 +28,5 @@ export class Trip {
 
   @Field(() => Date, { description: 'Data prevista' })
   arrival_forecast: Date;
+
 }

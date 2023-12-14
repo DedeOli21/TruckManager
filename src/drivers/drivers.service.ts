@@ -1,39 +1,33 @@
 import { Injectable } from '@nestjs/common';
-import { DriverModel } from './models/drivers.model';
-import { CreateDriverDto } from './dto/create-driver.dto';
+import { CreateDriverInput } from './dto/create-driver.input';
+import { UpdateDriverInput } from './dto/update-driver.input';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
+import { DriverModel } from './models/drivers.model';
+
 @Injectable()
 export class DriversService {
   constructor(
     @InjectRepository(DriverModel)
     private driverRepository: Repository<DriverModel>,
   ) {}
-
-  mockDrivers = [
-    { name: 'Jose Moacir', isAvailable: false },
-    { name: 'Reinaldo', isAvailable: true },
-    { name: 'teste', isAvailable: true },
-    { name: 'fretado', isAvailable: true },
-  ];
-
-  create(dataDriver: CreateDriverDto): Promise<DriverModel> {
-    return this.driverRepository.save(dataDriver)
+  create(createDriverInput: CreateDriverInput) {
+    return this.driverRepository.save(createDriverInput)
   }
 
-  async findAll(): Promise<DriverModel[]> {
-    return this.driverRepository.find()
+  findAll() {
+    return this.driverRepository.find();
   }
 
-  async findOne(nameDriver: string): Promise<DriverModel> {
-    return this.driverRepository.findOne({ where: { name: nameDriver }})
+  findOne(name: string) {
+    return this.driverRepository.findOne({ where: { name: name}});
   }
 
-  update() {
-    return `This action updates a driver`;
+  update(id: string, updateDriverInput: UpdateDriverInput) {
+    return this.driverRepository.update(id, updateDriverInput)
   }
 
-  async remove(id: string): Promise<boolean> {
-    return true;
+  remove(id: string) {
+    return this.driverRepository.delete(id);
   }
 }

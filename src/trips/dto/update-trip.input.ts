@@ -1,8 +1,9 @@
-import { ObjectType, Field, Int } from '@nestjs/graphql';
+import { CreateTripInput } from './create-trip.input';
+import { InputType, Field, Int, PartialType } from '@nestjs/graphql';
 
-@ObjectType()
-export class Trip {
-  @Field(() => Int, { description: 'id' })
+@InputType()
+export class UpdateTripInput extends PartialType(CreateTripInput) {
+  @Field(() => Int)
   id: number;
 
   @Field(() => Int, { description: 'id do motorista' })

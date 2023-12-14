@@ -1,10 +1,11 @@
-import { ObjectType, Field, Int } from '@nestjs/graphql';
+import { CreateDriverInput } from './create-driver.input';
+import { InputType, Field, Int, PartialType } from '@nestjs/graphql';
 
-@ObjectType()
-export class Driver {
+@InputType()
+export class UpdateDriverInput extends PartialType(CreateDriverInput) {
   @Field(() => String, { description: 'id' })
   id: string;
-
+  
   @Field(() => String, { description: 'Nome do motorista' })
   name: string;
 

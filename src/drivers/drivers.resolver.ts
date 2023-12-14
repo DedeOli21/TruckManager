@@ -1,46 +1,35 @@
-import { NotFoundException } from '@nestjs/common';
-import { Args, Mutation, Query, Resolver, Subscription } from '@nestjs/graphql';
-import { PubSub } from 'graphql-subscriptions';
-import { CreateDriverDto } from './dto/create-driver.dto';
-import { DriverModel } from './models/drivers.model';
+import { Resolver, Query, Mutation, Args, Int } from '@nestjs/graphql';
 import { DriversService } from './drivers.service';
+import { Driver } from './entities/driver.entity';
+import { CreateDriverInput } from './dto/create-driver.input';
+import { UpdateDriverInput } from './dto/update-driver.input';
 
-const pubSub = new PubSub();
-
-@Resolver(of => DriverModel)
+@Resolver(() => Driver)
 export class DriversResolver {
   constructor(private readonly driversService: DriversService) {}
 
-  @Query(returns => DriverModel)
-  async driver(@Args('id') id: string): Promise<DriverModel> {
-    const driver = await this.driversService.findOne(id);
-    if (!driver) {
-      throw new NotFoundException(id);
-    }
-    return driver;
+  @Mutation(() => Driver)
+  createDriver(@Args('createDriverInput') createDriverInput: CreateDriverInput) {
+    return this.driversService.create(createDriverInput);
   }
 
-  @Query(returns => [DriverModel])
-  drivers(): Promise<DriverModel[]> {
+  @Query(() => [Driver], { name: 'drivers' })
+  findAll() {
     return this.driversService.findAll();
   }
 
-  @Mutation(returns => DriverModel)
-  async addDriver(
-    @Args('newDriverData') newDriverData: CreateDriverDto,
-  ): Promise<DriverModel> {
-    const driver = await this.driversService.create(newDriverData);
-    pubSub.publish('driverAdded', { driverAdded: driver });
-    return driver;
+  @Query(() => Driver, { name: 'driver' })
+  findOne(@Args('name', { type: () => String }) id: string) {
+    return this.driversService.findOne(id);
   }
 
-  @Mutation(returns => Boolean)
-  async removeDriver(@Args('id') id: string) {
+  @Mutation(() => Driver)
+  updateDriver(@Args('updateDriverInput') updateDriverInput: UpdateDriverInput) {
+    return this.driversService.update(updateDriverInput.id, updateDriverInput);
+  }
+
+  @Mutation(() => Driver)
+  removeDriver(@Args('id', { type: () => String }) id: string) {
     return this.driversService.remove(id);
-  }
-
-  @Subscription(returns => DriverModel)
-  driverAdded() {
-    return pubSub.asyncIterator('driverAdded');
   }
 }
