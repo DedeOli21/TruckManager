@@ -7,6 +7,7 @@ import { DriversModule } from './drivers/drivers.module';
 import { TripsModule } from './trips/trips.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { typeOrmConfig } from './configs/typeorm.config';
+import { VehiclesModule } from './vehicles/vehicles.module';
 
 @Module({
   imports: [
@@ -17,6 +18,7 @@ import { typeOrmConfig } from './configs/typeorm.config';
       autoSchemaFile: 'schema.gql',
     }),
     TypeOrmModule.forRoot(typeOrmConfig),
+    VehiclesModule,
   ],
   controllers: [AppController],
   providers: [AppService],
